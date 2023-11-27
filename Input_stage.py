@@ -1,8 +1,6 @@
 # input_stage.py
 import streamlit as st
-from bokeh.models.widgets import Button
-from bokeh.models import CustomJS
-from streamlit_bokeh_events import streamlit_bokeh_events
+from streamlit_geolocation import streamlit_geolocation
 import requests
 
 def get_location_from_address(address):
@@ -33,29 +31,13 @@ def input_stage():
         user_location = (lat, lon)
 
     elif method == "Share Location":
-        loc_button = Button(label="Get Location")
-        loc_button.js_on_event("button_click", CustomJS(code="""
-            navigator.geolocation.getCurrentPosition(
-                (loc) => {
-                    document.dispatchEvent(new CustomEvent("GET_LOCATION", {detail: {lat: loc.coords.latitude, lon: loc.coords.longitude}}))
-                }
-            )
-            """))
-        result = streamlit_bokeh_events(
-            loc_button,
-            events="GET_LOCATION",
-            key="get_location",
-            refresh_on_update=False,
-            override_height=75,
-            debounce_time=0)
+        location = streamlit_geolocation()
+        if location:
+            lat = location['latitude']
+            lon = location['longitude']
+            user_location = (lat, lon)
+            st.write(f"Coordinates: {user_location}")
 
-        if result:
-            if "GET_LOCATION" in result:
-                lat, lon = result.get("GET_LOCATION").values()
-                user_location = (lat, lon)
-                st.write(f"Coordinates: {user_location}")
-            else:
-                user_location = (None, None)
         else:
             user_location = (None, None)
 
