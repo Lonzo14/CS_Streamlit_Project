@@ -15,7 +15,6 @@ def main():
     st.write(f"Category: {business_category}")
 
 
-
     # User inputs
     lat = st.number_input('Latitude', value=40.7128)  # Default values as an example
     lon = st.number_input('Longitude', value=-74.0060)
