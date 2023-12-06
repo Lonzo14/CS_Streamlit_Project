@@ -20,9 +20,14 @@ def main():
     radius_km = st.number_input('Radius in km', value=5)
     business_type = st.selectbox('Business Type', ['Restaurant', 'Cafe', 'Retail'])
 
-    # Example usage
-    # ... [your data definition] ...
-
+   # Example usage
+    data = [
+        {'name': 'Restaurant A', 'review': 'Excellent', 'type': 'Restaurant', 'latitude': 40.7128, 'longitude': -74.0060},
+        {'name': 'Restaurant B', 'review': 'Good', 'type': 'Restaurant', 'latitude': 40.73, 'longitude': -74.0060},
+        {'name': 'Restaurant C', 'review': 'Bad', 'type': 'Restaurant', 'latitude': 40.74, 'longitude': -74.0060},
+        {'name': 'Cafe B', 'review': 'Very Good', 'type': 'Cafe', 'latitude': 40.7328, 'longitude': -74.0160},
+        {'name': 'Retail C', 'review': 'Good', 'type': 'Retail', 'latitude': 40.7528, 'longitude': -74.0260}
+        ]
     # Button to perform action
     if st.button('Find Businesses'):
         # Use user_location as the coordinates
@@ -33,7 +38,8 @@ def main():
             df = pd.DataFrame({
                 'lat': [res['coordinates'][0] for res in results],
                 'lon': [res['coordinates'][1] for res in results],
-                'name': [res['name'] for res in results]  # Adding business names
+                'name': [res['name'] for res in results],
+                'review': [res['review'] for res in results]
             })
             st.map(df)
             # Optionally display details in a table
